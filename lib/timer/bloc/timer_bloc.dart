@@ -16,9 +16,10 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     on<TimerResumed>(_onResumed);
     on<TimerReset>(_onReset);
     on<_TimerTicked>(_onTicked);
+    on<TimerDurationChanged>(_onDurationChanged);
   }
 
-  static final int _duration = 60;
+  static final int _duration = 25 * 60; //25min
   final Ticker _ticker;
   StreamSubscription<int>? _tickerSubscription;
 
@@ -26,6 +27,10 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   Future<void> close() {
     _tickerSubscription?.cancel();
     return super.close();
+  }
+
+  void _onDurationChanged(TimerDurationChanged event,Emitter<TimerState> emit) {
+    print("onDurationChanged to ${event.duration}");
   }
 
   void _onStarted(TimerStarted event, Emitter<TimerState> emit) {
@@ -36,9 +41,11 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onTicked(_TimerTicked event, Emitter<TimerState> emit) {
-    emit(event.duration > 0
-        ? TimerRunInProgress(event.duration)
-        : const TimerRunComplete());
+    emit(
+      event.duration > 0
+          ? TimerRunInProgress(event.duration)
+          : const TimerRunComplete(),
+    );
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {

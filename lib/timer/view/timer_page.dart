@@ -18,6 +18,10 @@ class TimerPage extends StatelessWidget {
 class TimerView extends StatelessWidget {
   const TimerView({super.key});
 
+  void _onTimerValueChanged(BuildContext context, int newValue) {
+    context.read<TimerBloc>().add(TimerDurationChanged(duration: newValue*60));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +31,10 @@ class TimerView extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              TimerValuePicker(
+                onTimerValueSelected:
+                    (value) => _onTimerValueChanged(context, value),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 100),
                 child: TextView(),
@@ -36,6 +44,34 @@ class TimerView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TimerValuePicker extends StatelessWidget {
+  // final ValueChanged<int?> onTimerValueSelected;
+  final Function(int) onTimerValueSelected;
+  TimerValuePicker({super.key, required this.onTimerValueSelected});
+  final List<int> _timerValues = [25, 30, 40, 60];
+
+  void _onSelected(int? timerValue) {
+    if (timerValue != null) {
+      onTimerValueSelected(timerValue);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownMenu<int>(
+      initialSelection: _timerValues.first,
+      dropdownMenuEntries:
+          _timerValues
+              .map(
+                (int item) =>
+                    DropdownMenuEntry(value: item, label: item.toString()),
+              )
+              .toList(),
+      onSelected: _onSelected,
     );
   }
 }

@@ -21,6 +21,11 @@ class TimerReset extends TimerEvent {
   const TimerReset();
 }
 
+class TimerDurationChanged extends TimerEvent {
+  const TimerDurationChanged({required this.duration});
+  final int duration;
+}
+
 class _TimerTicked extends TimerEvent {
   const _TimerTicked({required this.duration});
   final int duration;
