@@ -20,7 +20,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   static final int _duration = 25 * 60; //25min
-  final Ticker _ticker;
+  final Ticker _ticker;          
   StreamSubscription<int>? _tickerSubscription;
 
   @override

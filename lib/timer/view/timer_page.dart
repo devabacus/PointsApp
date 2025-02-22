@@ -22,6 +22,7 @@ class TimerView extends StatelessWidget {
     context.read<TimerBloc>().add(TimerDurationChanged(duration: newValue*60));
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +76,7 @@ class TimerValuePicker extends StatelessWidget {
     );
   }
 }
+
 
 class TextView extends StatelessWidget {
   const TextView({super.key});
