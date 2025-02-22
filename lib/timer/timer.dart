@@ -1,0 +1,1 @@
+export 'package:pointsapp/timer/view/timer_page.dart';
