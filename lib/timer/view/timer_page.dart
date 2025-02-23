@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pointsapp/ticker.dart';
 import 'package:pointsapp/timer/bloc/timer_bloc.dart';
+import 'package:pointsapp/timer/view/timer_text.dart';
+import 'timer_actions.dart';
 
 class TimerPage extends StatelessWidget {
   const TimerPage({super.key});
@@ -27,29 +29,44 @@ class TimerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Background(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: BlocBuilder<TimerBloc, TimerState>(
+        builder: (context, state) {
+          return Stack(
             children: [
-              TimerValuePicker(
-                onTimerValueSelected:
-                    (value) => _onTimerValueChanged(context, value),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 100),
-                child: TextView(),
-              ),
-              Actions(
-                onStart: ()=>context.read<TimerBloc>().add(TimerStarted(duration: context.read<TimerBloc>().state.duration)),
-                onPause: ()=>context.read<TimerBloc>().add(TimerPaused()),
-                onResume: ()=>context.read<TimerBloc>().add(TimerResumed()),
-                onReset: ()=>context.read<TimerBloc>().add(TimerReset()),
+              Background(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TimerValuePicker(
+                    onTimerValueSelected:
+                        (value) => _onTimerValueChanged(context, value),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 100),
+                    child: TextView(
+                      duration: context.select(
+                        (TimerBloc bloc) => bloc.state.duration,
+                      ),
+                    ),
+                  ),
+                  TimerActions(
+                    state: state,
+                    onStart:
+                        () => context.read<TimerBloc>().add(
+                          TimerStarted(
+                            duration: context.read<TimerBloc>().state.duration,
+                          ),
+                        ),
+                    onPause: () => context.read<TimerBloc>().add(TimerPaused()),
+                    onResume:
+                        () => context.read<TimerBloc>().add(TimerResumed()),
+                    onReset: () => context.read<TimerBloc>().add(TimerReset()),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -84,89 +101,7 @@ class TimerValuePicker extends StatelessWidget {
   }
 }
 
-class TextView extends StatelessWidget {
-  const TextView({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final duration = context.select((TimerBloc bloc) => bloc.state.duration);
-
-    final hourStr =
-        duration >= 60 * 60
-            ? "${((duration / 60 / 60) % 60).floor().toString().padLeft(2, '0')}:"
-            : "";
-
-    final minuteStr = ((duration / 60) % 60).floor().toString().padLeft(2, '0');
-    final secondStr = (duration % 60).toString().padLeft(2, '0');
-    return Text(
-      "$hourStr$minuteStr:$secondStr",
-      style: TextStyle(fontSize: 50),
-    );
-  }
-}
-
-class Actions extends StatelessWidget {
-  final VoidCallback onStart;
-  final VoidCallback onPause;
-  final VoidCallback onResume;
-  final VoidCallback onReset;
-
-  const Actions({
-    super.key,
-    required this.onStart,
-    required this.onPause,
-    required this.onResume,
-    required this.onReset,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TimerBloc, TimerState>(
-      // buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ...switch (state) {
-              TimerInitial() => [
-                FloatingActionButton(
-                  onPressed: onStart,
-                  child: const Icon(Icons.play_arrow),
-                ),
-              ],
-
-              TimerRunInProgress() => [
-                FloatingActionButton(
-                  onPressed: onPause,
-                  child: const Icon(Icons.pause),
-                ),
-              ],
-
-              TimerRunPause() => [
-                FloatingActionButton(
-                  onPressed: onResume,
-                  child: Icon(Icons.play_arrow),
-                ),
-
-                FloatingActionButton(
-                  onPressed: onReset,
-                  child: const Icon(Icons.replay),
-                ),
-              ],
-
-              TimerRunComplete() => [
-                FloatingActionButton(
-                  onPressed: onReset,
-                  child: const Icon(Icons.replay),
-                ),
-              ],
-            },
-          ],
-        );
-      },
-    );
-  }
-}
 
 class Background extends StatelessWidget {
   const Background({super.key});
