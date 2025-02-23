@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pointsapp/timer/bloc/timer_bloc.dart';
-import 'package:pointsapp/timer/view/dropdown_picker.dart';
+import 'package:pointsapp/common/widgets/dropdown_picker.dart';
 import 'package:pointsapp/timer/view/timer_background.dart';
 import 'package:pointsapp/timer/view/timer_text.dart';
 
