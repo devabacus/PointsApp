@@ -29,7 +29,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     _tickerSubscription?.cancel();
     return super.close();
   }
-
+   
   void _onDurationChanged(
     TimerDurationChanged event,
     Emitter<TimerState> emit,

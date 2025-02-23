@@ -26,11 +26,10 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Stack(
         children: [
-          Background(), 
+          Background(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -42,7 +41,12 @@ class TimerView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 100),
                 child: TextView(),
               ),
-              Actions(),
+              Actions(
+                onStart: ()=>context.read<TimerBloc>().add(TimerStarted(duration: context.read<TimerBloc>().state.duration)),
+                onPause: ()=>context.read<TimerBloc>().add(TimerPaused()),
+                onResume: ()=>context.read<TimerBloc>().add(TimerResumed()),
+                onReset: ()=>context.read<TimerBloc>().add(TimerReset()),
+              ),
             ],
           ),
         ],
@@ -102,7 +106,18 @@ class TextView extends StatelessWidget {
 }
 
 class Actions extends StatelessWidget {
-  const Actions({super.key});
+  final VoidCallback onStart;
+  final VoidCallback onPause;
+  final VoidCallback onResume;
+  final VoidCallback onReset;
+
+  const Actions({
+    super.key,
+    required this.onStart,
+    required this.onPause,
+    required this.onResume,
+    required this.onReset,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -115,42 +130,34 @@ class Actions extends StatelessWidget {
             ...switch (state) {
               TimerInitial() => [
                 FloatingActionButton(
+                  onPressed: onStart,
                   child: const Icon(Icons.play_arrow),
-                  onPressed:
-                      () => context.read<TimerBloc>().add(
-                        TimerStarted(duration: state.duration),
-                      ),
                 ),
               ],
 
               TimerRunInProgress() => [
                 FloatingActionButton(
+                  onPressed: onPause,
                   child: const Icon(Icons.pause),
-                  onPressed: () => context.read<TimerBloc>().add(TimerPaused()),
-                ),
-                FloatingActionButton(
-                  child: const Icon(Icons.replay),
-                  onPressed: () => context.read<TimerBloc>().add(TimerReset()),
                 ),
               ],
 
               TimerRunPause() => [
                 FloatingActionButton(
+                  onPressed: onResume,
                   child: Icon(Icons.play_arrow),
-                  onPressed:
-                      () => context.read<TimerBloc>().add(TimerResumed()),
                 ),
 
                 FloatingActionButton(
+                  onPressed: onReset,
                   child: const Icon(Icons.replay),
-                  onPressed: () => context.read<TimerBloc>().add(TimerReset()),
                 ),
               ],
 
               TimerRunComplete() => [
                 FloatingActionButton(
+                  onPressed: onReset,
                   child: const Icon(Icons.replay),
-                  onPressed: () => context.read<TimerBloc>().add(TimerReset()),
                 ),
               ],
             },
