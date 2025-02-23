@@ -30,7 +30,7 @@ class TimerView extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Background(),
+          Background(), 
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
