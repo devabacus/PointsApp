@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pointsapp/ticker.dart';
 import 'package:pointsapp/timer/bloc/timer_bloc.dart';
+import 'package:pointsapp/timer/view/timer_background.dart';
 import 'package:pointsapp/timer/view/timer_text.dart';
+import 'package:pointsapp/timer/view/dropdown_picker.dart';
 import 'timer_actions.dart';
 
 class TimerPage extends StatelessWidget {
@@ -33,20 +35,25 @@ class TimerView extends StatelessWidget {
         builder: (context, state) {
           return Stack(
             children: [
-              Background(),
+              const Background(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TimerValuePicker(
-                    onTimerValueSelected:
+                    onValueSelected:
                         (value) => _onTimerValueChanged(context, value),
+                    selectedValue: context.select(
+                      (TimerBloc bloc) => bloc.state.duration ~/ 60,
+                    ),
+                    options: [25, 30, 40, 60, 90, 120, 180],
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 100),
-                    child: TextView(
-                      duration: context.select(
-                        (TimerBloc bloc) => bloc.state.duration,
-                      ),
+                    child: BlocSelector<TimerBloc, TimerState, int>(
+                      selector: (state) => state.duration,
+                      builder: (context, duration) {
+                        return TextView(duration: duration);
+                      },
                     ),
                   ),
                   TimerActions(
@@ -67,56 +74,6 @@ class TimerView extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class TimerValuePicker extends StatelessWidget {
-  // final ValueChanged<int?> onTimerValueSelected;
-  final ValueChanged<int> onTimerValueSelected;
-  TimerValuePicker({super.key, required this.onTimerValueSelected});
-  final List<int> _timerValues = [25, 30, 40, 60, 90, 120, 180];
-
-  @override
-  Widget build(BuildContext context) {
-    final selectedValue = context.select(
-      (TimerBloc bloc) => bloc.state.duration ~/ 60,
-    );
-    return DropdownMenu<int>(
-      initialSelection: selectedValue,
-      dropdownMenuEntries:
-          _timerValues
-              .map(
-                (int item) =>
-                    DropdownMenuEntry(value: item, label: item.toString()),
-              )
-              .toList(),
-      onSelected: (value) {
-        if (value != null) {
-          onTimerValueSelected(value);
-        }
-      },
-    );
-  }
-}
-
-
-
-class Background extends StatelessWidget {
-  const Background({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.blue.shade50, Colors.blue.shade500],
-          ),
-        ),
       ),
     );
   }
