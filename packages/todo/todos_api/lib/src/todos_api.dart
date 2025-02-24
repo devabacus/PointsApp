@@ -7,11 +7,11 @@ abstract class TodosApi {
 
   Future<void> saveTodo(Todo todo);
 
-  Future<void> deleteTodo(Todo todo);
+  Future<void> deleteTodo(String id);
 
   Future<int> clearCompleted();
 
-  Future<int> completeAll({required bool isComplete});
+  Future<int> completeAll({required bool isCompleted});
 
   Future<void> close();
 }
