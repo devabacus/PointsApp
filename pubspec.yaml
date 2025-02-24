@@ -16,6 +16,10 @@ dependencies:
 
   todos_api:
     path: packages/todo/todos_api  
+  local_storage_todos_api:
+    path: packages/todo/local_storage_todos_api
+  todos_repository:
+    path: packages/todo/todos_repository  
 
 dev_dependencies:
   flutter_test:
