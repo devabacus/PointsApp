@@ -4,6 +4,6 @@ import 'package:pointsapp/simple_observer.dart';
 import 'app.dart';
 
 void main() {
-  // Bloc.observer = TimerObserver();
+  Bloc.observer = TimerObserver();
   runApp(const App());
 }

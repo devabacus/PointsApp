@@ -13,9 +13,9 @@ Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
   isCompleted: json['isComplete'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
-  'id': instance.id,
-  'title': instance.title,
-  'description': instance.description,
-  'isComplete': instance.isCompleted,
-};
+// Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
+//   'id': instance.id,
+//   'title': instance.title,
+//   'description': instance.description,
+//   'isComplete': instance.isCompleted,
+// };
