@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pointsapp",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "pointsapp (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "pointsapp (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "todos_api",
+            "cwd": "packages\\todo\\todos_api",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "todos_api (profile mode)",
+            "cwd": "packages\\todo\\todos_api",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "todos_api (release mode)",
+            "cwd": "packages\\todo\\todos_api",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
