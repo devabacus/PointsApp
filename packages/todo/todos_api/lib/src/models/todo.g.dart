@@ -18,4 +18,4 @@ Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
 //   'title': instance.title,
 //   'description': instance.description,
 //   'isComplete': instance.isCompleted,
-// };
+// }
