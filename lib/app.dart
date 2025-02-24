@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'timer/timer.dart';
+import 'features/timer/timer.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

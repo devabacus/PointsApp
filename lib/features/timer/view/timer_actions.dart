@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pointsapp/timer/bloc/timer_bloc.dart';
+import 'package:pointsapp/features/timer/bloc/timer_bloc.dart';
 
 class TimerActions extends StatelessWidget {
   final TimerState state;
